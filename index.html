@@ -1,0 +1,359 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#f5f2e9">
+  <meta name="description" content="以长按分蓍，以涟漪成卦。可离线运行的蓍草筮法。">
+  <title>筮 · 涟漪之间</title>
+  <style>
+    :root{--paper:#f5f2e9;--ink:#303c36;--muted:#83887a;--line:#dcdccd;--red:#a34d3b;--gold:#aa9060;--serif:"Songti SC","Noto Serif CJK SC","SimSun",serif;--sans:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif}
+    *{box-sizing:border-box}body{margin:0;color:var(--ink);background:var(--paper);font-family:var(--sans);font-size:14px;-webkit-tap-highlight-color:transparent}body:before{content:"";position:fixed;inset:0;pointer-events:none;opacity:.16;z-index:10;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.72' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' opacity='.25' filter='url(%23n)'/%3E%3C/svg%3E")}
+    button,input,textarea{font:inherit}button{cursor:pointer;color:inherit}button:disabled{cursor:default}button:focus-visible,a:focus-visible,input:focus-visible,summary:focus-visible{outline:2px solid var(--red);outline-offset:5px}button{touch-action:manipulation}a{color:inherit}header{max-width:1440px;margin:auto;display:flex;align-items:center;justify-content:space-between;padding:25px 5vw;border-bottom:1px solid var(--line)}.brand{display:flex;align-items:center;gap:14px}.brand-mark{font-family:var(--serif);font-size:29px;line-height:1}.brand-text{font-size:10px;letter-spacing:3px;color:var(--muted);border-left:1px solid var(--line);padding-left:14px}.header-right{display:flex;align-items:center;gap:26px}.quiet{border:0;background:none;padding:8px 0;font-size:12px;color:#6c7468}.issue{font-family:var(--serif);font-size:11px;letter-spacing:2px;color:var(--muted)}
+    main{max-width:1340px;margin:0 auto;padding:46px 5vw 25px}.intro{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:31px}.eyebrow{font-size:10px;letter-spacing:3px;color:var(--gold);margin-bottom:15px}.intro h1{font:400 clamp(31px,4vw,46px)/1.3 var(--serif);letter-spacing:5px;margin:0}.intro p{font-size:12px;line-height:1.9;letter-spacing:1px;color:var(--muted);margin:15px 0 0}.intro-aside{font:13px/2.1 var(--serif);writing-mode:vertical-rl;letter-spacing:4px;margin:0 5px 0 20px;color:#858775}.layout{display:grid;grid-template-columns:minmax(0,1fr) 282px;gap:36px;align-items:start}.ritual{min-width:0}.question{display:flex;align-items:center;gap:17px;border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:13px 0}.question label{font:16px var(--serif);white-space:nowrap;letter-spacing:2px}.question input{border:0;background:none;min-width:0;flex:1;padding:5px 0;outline-offset:2px;font-size:16px;color:var(--ink)}.question input::placeholder{color:#a1a395}.question .optional{font-size:9px;letter-spacing:1px;color:var(--muted)}.scene{position:relative;height:376px;overflow:hidden;isolation:isolate}.scene canvas{width:100%;height:100%;display:block}.scene-top{position:absolute;top:21px;left:2px;display:flex;align-items:center;gap:8px;font-size:10px;letter-spacing:2px;color:var(--muted)}.dot{width:4px;height:4px;background:var(--gold);border-radius:50%}.scene-coordinate{position:absolute;right:2px;top:21px;font-size:9px;letter-spacing:2px;color:#9c9e90}.scene-state{position:absolute;bottom:25px;left:0;right:0;text-align:center;pointer-events:none}.scene-state strong{display:block;font:22px var(--serif);letter-spacing:5px;font-weight:400;margin-bottom:8px}.scene-state span{color:var(--muted);font-size:10px;letter-spacing:2px}.permanent{position:absolute;left:13px;top:98px;display:flex;align-items:center;gap:10px;color:#999b8b;font:11px var(--serif);writing-mode:vertical-rl;letter-spacing:3px}.permanent i{display:block;width:2px;height:45px;background:#aa90607a;transform:rotate(9deg)}
+    .controls{border-top:1px solid var(--line);padding-top:18px}.control-row{display:flex;justify-content:space-between;align-items:center;gap:12px}.mode{display:inline-flex;background:#e9e9dd;border-radius:3px;padding:3px}.mode button{border:0;background:transparent;color:var(--muted);font-size:10px;letter-spacing:1px;padding:9px 12px;border-radius:2px;white-space:nowrap}.mode button[aria-pressed="true"]{background:var(--paper);color:var(--ink);box-shadow:0 1px 3px #3541300a}.rounds{display:flex;gap:6px}.round{width:24px;height:3px;background:#dfe0d2}.round.done{background:var(--ink)}.round.current{background:var(--gold)}.hold{position:relative;width:146px;height:146px;min-height:0;flex-shrink:0;margin:25px auto 18px;padding:18px 9px;border:1px solid #73806a;background:var(--ink);color:#f8f5e9;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;overflow:hidden;user-select:none;-webkit-user-select:none;-webkit-touch-callout:none;touch-action:none;border-radius:50%;box-shadow:0 0 0 6px var(--paper),0 0 0 7px var(--line)}.hold:before{content:"";position:absolute;inset:0;background:#ffffff0d;border-radius:50%;transform:scale(var(--charge,0));transform-origin:center;transition:transform .1s linear}.hold .icon{font-size:23px;font-weight:200;line-height:1;color:#c6c8ac}.hold .label{position:relative;font:16px var(--serif);letter-spacing:2px;white-space:nowrap}.hold .sub{font-size:9px;color:#b9c1ae;letter-spacing:1px}.hold.active{background:#485748}.hold:disabled{opacity:.65}.control-note{text-align:center;margin:11px 0 0;color:var(--muted);font-size:10px;letter-spacing:1px;min-height:16px}.count-log{margin-top:21px}.log-head{display:flex;justify-content:space-between;font-size:10px;color:var(--muted);letter-spacing:2px;margin-bottom:10px}.log-table{width:100%;border-collapse:collapse;font-size:11px;text-align:right;font-variant-numeric:tabular-nums}.log-table th{color:#8a8f80;font-weight:400;padding:9px 5px;border-bottom:1px solid var(--line);font-size:10px}.log-table th:first-child,.log-table td:first-child{text-align:left}.log-table td{padding:11px 5px;border-bottom:1px solid #e6e5d9}.log-table .new-row{animation:appear .45s ease}.log-empty{text-align:center;color:#a0a392;font:12px var(--serif);letter-spacing:2px;padding:24px 0}.count-foot{margin:11px 0 0;font-size:10px;color:var(--muted);line-height:1.8}
+    aside{border:1px solid var(--line);padding:24px 23px 19px;background:#efeee3a0;border-radius:3px}.aside-head{display:flex;justify-content:space-between;align-items:center}.aside-head h2{font:18px var(--serif);letter-spacing:4px;font-weight:400;margin:0}.stamp{font:11px var(--serif);color:var(--red);border:1px solid #a34d3b7a;padding:4px 3px;line-height:1;transform:rotate(-4deg)}.hex-caption{display:flex;justify-content:space-between;font-size:9px;color:var(--muted);letter-spacing:2px;margin:24px 0 9px}.hex-list{display:flex;flex-direction:column-reverse;gap:0;margin:0}.yao-row{display:flex;align-items:center;height:37px;gap:12px}.yao-index{font:10px var(--serif);color:#9a9d8c;width:20px}.yao-body{flex:1;display:flex;position:relative;gap:14px;height:7px}.yao-body i{display:block;flex:1;background:var(--ink);border-radius:1px}.yao-body.empty{height:0;border-top:1px dashed #cccfbe}.yao-body.moving i{background:var(--red)}.yao-number{font-size:10px;width:30px;text-align:right;color:var(--muted)}.yao-number.moving{color:var(--red)}.aside-hint{font-size:10px;color:var(--muted);line-height:1.9;letter-spacing:.6px;margin:15px 0 20px}.progress-line{height:2px;background:#dadccd;margin-bottom:14px}.progress-line span{display:block;height:100%;background:var(--gold);transition:width .5s}.progress-copy{font-size:10px;color:var(--muted);display:flex;justify-content:space-between;letter-spacing:1px}.reading{border-top:1px solid var(--line);margin-top:24px;padding-top:19px}.reading-label{font-size:9px;letter-spacing:2px;color:var(--gold)}.reading-title{font:26px var(--serif);letter-spacing:3px;margin:12px 0 8px}.reading-sub{font:12px/1.9 var(--serif);color:var(--muted);margin:0}.result-names{display:flex;align-items:center;gap:10px;justify-content:space-between}.result-names .reading-title{font-size:25px}.result-arrow{font-size:15px;color:var(--gold)}.moving-detail{font-size:11px;line-height:1.9;color:#747b6c;margin:14px 0 0}.result-actions{display:flex;gap:8px;margin-top:17px}.small-btn{background:none;border:1px solid #c8cdbb;border-radius:2px;font-size:10px;padding:9px 10px;letter-spacing:1px}.small-btn:hover{background:#e5e6d9}.new-ritual{display:block;width:100%;margin-top:19px;border:0;border-top:1px solid var(--line);padding:17px 0 0;background:none;color:#7c8373;font-size:11px;letter-spacing:2px}.guide{border-top:1px solid var(--line);margin-top:29px;padding:16px 0}.guide summary{font:12px var(--serif);letter-spacing:2px;color:#747d6d;cursor:pointer}.guide-body{font-size:12px;color:#7b8272;line-height:2;padding:12px 0 0;max-width:750px}.guide-body p{margin:8px 0}.legend{display:flex;flex-wrap:wrap;gap:9px 22px;font-size:10px;color:var(--muted);margin:0 0 12px}.legend b{font-weight:400;color:var(--ink)}footer{max-width:1340px;margin:0 auto;padding:5px 5vw 24px;display:flex;justify-content:space-between;gap:15px;font-size:9px;letter-spacing:1px;color:#929886}.footer-serif{font-family:var(--serif);letter-spacing:3px}.toast{position:fixed;bottom:30px;left:50%;transform:translate(-50%,15px);opacity:0;pointer-events:none;background:var(--ink);color:var(--paper);padding:13px 23px;border-radius:3px;transition:.25s;font-size:12px;z-index:20;max-width:90vw;text-align:center}.toast.show{opacity:1;transform:translate(-50%,0)}dialog{border:1px solid var(--line);background:var(--paper);color:var(--ink);padding:25px;width:min(370px,90vw);border-radius:4px}dialog::backdrop{background:#26332755;backdrop-filter:blur(3px)}dialog h2{font:23px var(--serif);letter-spacing:2px;margin-top:0}dialog p{font-size:12px;color:var(--muted);line-height:1.9}dialog .dialog-actions{display:flex;justify-content:flex-end;gap:10px;margin-top:22px}.sr-only{position:absolute;width:1px;height:1px;margin:-1px;overflow:hidden;clip:rect(0,0,0,0)}@keyframes appear{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:translateY(0)}}
+    @media(min-width:1200px){.scene{height:405px}main{padding-top:48px}.layout{gap:48px}}
+    @media(max-width:760px){header{padding:20px 6vw}.issue{display:none}.header-right{gap:16px}main{padding:31px 6vw 15px}.intro{margin-bottom:24px}.intro h1{font-size:32px;letter-spacing:4px}.intro p{font-size:11px;letter-spacing:.5px}.intro-aside{font-size:11px;letter-spacing:3px}.layout{grid-template-columns:minmax(0,1fr);gap:25px}.scene{height:330px}.scene-state{bottom:22px}.scene-top{font-size:9px}.scene-coordinate{font-size:8px}.permanent{left:8px;top:85px}.hold{width:136px;height:136px;min-height:0}.hold .sub{font-size:9px}.mode button{padding:9px 10px}.question{gap:12px}.question label{font-size:15px}.question .optional{display:none}aside{display:grid;grid-template-columns:1fr 1fr;column-gap:25px;padding:21px}.aside-head{grid-column:1/-1}.hex-caption{grid-column:1;margin-top:20px}.hex-list{grid-column:1;grid-row:3/6}.yao-row{height:31px;gap:8px}.yao-body{height:6px;gap:10px}.yao-number{width:23px;font-size:9px}.yao-index{width:17px}.aside-hint{grid-column:2;grid-row:3;margin:0 0 15px;font-size:10px}.progress-line{grid-column:2;margin:0 0 10px}.progress-copy{grid-column:2;align-self:start;font-size:9px}.reading{grid-column:1/-1;margin-top:20px}.new-ritual{grid-column:1/-1;margin-top:17px}.reading-title{font-size:24px}.guide{margin-top:25px}footer{padding:5px 6vw 25px;font-size:8px;line-height:1.8}.footer-serif{letter-spacing:1px}.scene-state strong{font-size:21px}.legend{gap:8px 14px}}
+    @media(max-width:360px){.intro h1{font-size:28px}.intro-aside{display:none}.scene{height:300px}.hold .sub{font-size:9px}aside{column-gap:16px}.mode button{font-size:9px;padding:8px}.scene-coordinate{display:none}}
+    @media(prefers-reduced-motion:reduce){*,*:before,*:after{animation:none!important;transition:none!important}}
+    #pond{touch-action:auto;pointer-events:none;user-select:none;-webkit-user-select:none}.scene-top,.scene-coordinate,.permanent{pointer-events:none}
+    @media(max-width:760px),(pointer:coarse){body:before{display:none}}
+    .step-caption{font:12px var(--serif);letter-spacing:2px;color:var(--muted)}
+    .split-meter{position:absolute;top:65px;left:19%;right:17%;display:flex;justify-content:space-between;align-items:center;gap:10px;font:12px var(--serif);color:#727c69;pointer-events:none;font-variant-numeric:tabular-nums}
+    .split-meter[hidden]{display:none}.split-meter b{font:23px var(--serif);color:var(--ink);display:inline-block;min-width:30px;text-align:center}.split-note{font:9px var(--sans);letter-spacing:1px;color:#8b927e}.split-meter.frozen b{color:var(--red)}
+    @media(max-width:430px){.split-meter{left:16%;right:14%;top:59px}.split-note{font-size:8px;letter-spacing:0}.split-meter b{font-size:21px;min-width:27px}.scene-state span{font-size:9px;letter-spacing:1px}}
+    .copy-result{margin-top:30px;border-top:1px solid var(--line);padding-top:24px}.copy-result[hidden]{display:none}.copy-heading{display:flex;justify-content:space-between;align-items:center;gap:18px;margin-bottom:15px}.copy-heading h2{font:22px var(--serif);letter-spacing:4px;margin:0}.copy-heading p,.copy-hint{font-size:11px;color:var(--muted);line-height:1.8;margin:10px 0 0}.copy-heading button{flex-shrink:0}.copy-result textarea{display:block;resize:vertical;width:100%;min-height:250px;padding:18px 20px;background:#efeee366;border:1px solid var(--line);border-radius:3px;color:var(--ink);font:13px/1.9 var(--sans);-webkit-user-select:text;user-select:text}.copy-hint{font-size:10px}@media(max-width:430px){.copy-heading h2{font-size:20px}.copy-heading p{font-size:10px}.copy-result textarea{padding:15px;font-size:13px}.copy-heading button{font-size:10px;padding:10px}}
+  </style>
+</head>
+<body>
+  <header>
+    <div class="brand"><span class="brand-mark">筮</span><span class="brand-text">THE YARROW RITUAL</span></div>
+    <div class="header-right"><span class="issue">五十蓍 · 十八变 · 六爻</span><button class="quiet" id="helpButton">筮法说明 ↗</button></div>
+  </header>
+  <main>
+    <section class="intro"><div><div class="eyebrow">一 念 起，万 象 生</div><h1>于涟漪之间，得一卦。</h1><p>一滴入水，染深成波。松手，数此刻的深色蓍草。</p></div><div class="intro-aside">分而为二<br>揲之以四</div></section>
+    <div class="layout">
+      <section class="ritual" aria-label="分蓍起卦">
+        <div class="question"><label for="question">此刻所问</label><input id="question" maxlength="120" placeholder="写下想问的事，可留白" autocomplete="off"><span class="optional">随心 · 可不填</span></div>
+        <div class="scene" id="scene">
+          <canvas id="pond" role="img" aria-label="蓍草波纹与深浅变化，仅供观看；请长按下方圆形按钮起卦"></canvas>
+          <div class="scene-top"><span class="dot"></span><span id="stageLabel">初爻 · 蓍草四十九</span></div><div class="scene-coordinate" id="sceneCoordinate">静 待 一 念</div>
+          <div class="permanent"><i></i>虚一不用</div>
+          <div class="split-meter" id="splitMeter" hidden aria-label="画面中深色与浅色蓍草的实际根数"><span>深 <b id="leftCount">—</b></span><span class="split-note" id="splitNote">扩散染深 · 触壁返浅</span><span>浅 <b id="rightCount">—</b></span></div>
+          <div class="scene-state"><strong id="sceneTitle">蓍草未分</strong><span id="sceneSubtitle">五十取一，以四十九入筮</span></div>
+        </div>
+        <div class="controls">
+          <div class="control-row"><div class="mode" aria-label="起卦模式"><button id="modeStep" aria-pressed="true">逐变分蓍 · 十八次</button><button id="modeLine" aria-pressed="false">一按一爻 · 六次</button></div><div class="rounds" aria-label="当前爻的三变进度"><span class="round"></span><span class="round"></span><span class="round"></span></div></div>
+          <button class="hold" id="hold" aria-label="按住分蓍，松手清点。也可聚焦后按住空格键。"><span class="icon" aria-hidden="true">◎</span><span class="label">按住 · 分蓍</span><span class="sub">松手落定</span></button>
+          <p class="control-note" id="controlNote">按住起波，松手清点深色蓍草 · 支持空格键</p>
+        </div>
+        <div class="count-log"><div class="log-head"><span>分 蓍 手 记</span><span id="logCaption">三变成一爻</span></div><table class="log-table" aria-label="每一变的清点记录"><thead><tr><th>变次</th><th>深 / 浅</th><th>挂一</th><th>深余 / 浅余</th><th>移出</th><th>余蓍</th></tr></thead><tbody id="logBody"></tbody></table><div class="log-empty" id="logEmpty">待分蓍，记此刻。</div><p class="count-foot">四根一数，整除留四。余蓍三变后除以四，定阴阳老少。</p></div>
+      </section>
+      <aside aria-label="卦象与进度">
+        <div class="aside-head"><h2>此 刻 卦 象</h2><span class="stamp">观象</span></div>
+        <div class="hex-caption"><span>自下而上</span><span id="hexModeLabel">本卦</span></div>
+        <div class="hex-list" id="hexList"></div>
+        <p class="aside-hint" id="asideHint">初爻始于下，六爻成于上。<br>朱砂所示，为老阴、老阳之动爻。</p>
+        <div class="progress-line"><span id="progressBar" style="width:0%"></span></div><div class="progress-copy"><span id="progressText">零爻 / 六爻</span><span id="progressPercent">0%</span></div>
+        <section class="reading" id="reading"><span class="reading-label">静 心 以 待</span><div class="reading-title">一卦，尚在途中</div><p class="reading-sub">不必求快。<br>让每一次松手，都成为一处停顿。</p></section>
+        <button class="new-ritual" id="reset">重新起卦 ↺</button>
+      </aside>
+    </div>
+    <section class="copy-result" id="copyResult" hidden aria-labelledby="copyTitle"><div class="copy-heading"><div><h2 id="copyTitle">此卦手记</h2><p>所问、卦象与动爻，留作一份记录。</p></div><button class="small-btn" id="copyResultButton">复制起卦记录</button></div><label class="sr-only" for="copyText">可复制的起卦记录</label><textarea id="copyText" readonly rows="10" spellcheck="false"></textarea><p class="copy-hint" id="copyHint">也可直接选中文字，复制保存。</p></section>
+    <details class="guide" id="guide"><summary>如何起卦 · 关于这五十根蓍草</summary><div class="guide-body">
+      <p>准备五十，虚一不用。实际以四十九根起筮。每一变将蓍草分为两堆，从右堆取一根，再将两堆各以四根为组数过，最后余一至四根，恰好整除时留四。把挂一与两堆余数移出，剩余蓍草进入下一变。</p>
+      <p>第一变移出五或九根；第二、三变各移出四或八根。三变后余下二十四、二十八、三十二或三十六根，除以四，得六、七、八、九。每爻结束恢复四十九根，再求下一爻。</p>
+      <div class="legend"><span><b>6</b> 老阴 · 阴变阳</span><span><b>7</b> 少阳 · 不变</span><span><b>8</b> 少阴 · 不变</span><span><b>9</b> 老阳 · 阳变阴</span></div>
+      <p>「逐变分蓍」每次按住对应一变；「一按一爻」松手定下第一变，随后自动演完当前爻剩下的波纹与清点。自动波纹的种子在按下时一并确定，演化时长随本次按压时长变化。每一变都冻结真实显示的深色数量。切换模式保留已经得到的爻与变次。</p>
+      <p>蓍草聚在同一捆中，波纹从中心随机向外传播，经过的蓍草有概率染深；触壁后的返波，有概率将经过的深色蓍草褪浅。传播方向、分叉、速度、强弱以及每根草对波的响应都不相同。按住时连续起波，松手立即冻结最后显示的画面，只清点真实的深色数量。</p>
+      <p>深色数量作为此次分蓍的一组，浅色为另一组，随后从浅色组挂一，继续四根一数。不会强制接近一半，也不暗改数量。如果深色为零，或浅色不足两根，本次只记定格、不计入变次，可重新按住起波。这是遵循蓍草计数规则的数字演绎，分组概率由波纹算法决定。</p>
+      <p>六爻由下向上组成本卦，将其中老阴、老阳反转，得到之卦。本工具展示卦象、卦名和动爻，不作吉凶断语。所问与进度只保存在此浏览器；无需联网，刷新可继续。</p>
+    </div></details>
+  </main>
+  <footer><span>蓍草筮法的数字演绎 · 离线可用</span><span class="footer-serif">观象以省身，留白以容心。</span></footer>
+  <div class="toast" id="toast" role="status"></div><div class="sr-only" id="live" aria-live="polite"></div>
+  <dialog id="resetDialog"><h2>重起一念</h2><p id="resetMessage">重新起卦将清除本次爻象与分蓍记录。保留你写下的所问。</p><div class="dialog-actions"><button class="small-btn" id="cancelReset">继续此卦</button><button class="small-btn" id="confirmReset">重新起卦</button></div></dialog>
+  <script>
+  'use strict';
+  const $=id=>document.getElementById(id);
+  const NAMES=['初','二','三','四','五','上'], NUM=['零','一','二','三','四','五','六'];
+  const KEY='shi-yarrow-v1';
+  const TRIGRAMS={7:{name:'乾',image:'天',index:0},3:{name:'兑',image:'泽',index:1},5:{name:'离',image:'火',index:2},1:{name:'震',image:'雷',index:3},6:{name:'巽',image:'风',index:4},2:{name:'坎',image:'水',index:5},4:{name:'艮',image:'山',index:6},0:{name:'坤',image:'地',index:7}};
+  const HEXAGRAMS=[
+    ['1:乾','10:履','13:同人','25:无妄','44:姤','6:讼','33:遁','12:否'],
+    ['43:夬','58:兑','49:革','17:随','28:大过','47:困','31:咸','45:萃'],
+    ['14:大有','38:睽','30:离','21:噬嗑','50:鼎','64:未济','56:旅','35:晋'],
+    ['34:大壮','54:归妹','55:丰','51:震','32:恒','40:解','62:小过','16:豫'],
+    ['9:小畜','61:中孚','37:家人','42:益','57:巽','59:涣','53:渐','20:观'],
+    ['5:需','60:节','63:既济','3:屯','48:井','29:坎','39:蹇','8:比'],
+    ['26:大畜','41:损','22:贲','27:颐','18:蛊','4:蒙','52:艮','23:剥'],
+    ['11:泰','19:临','36:明夷','24:复','46:升','7:师','15:谦','2:坤']
+  ];
+  function hexInfo(lines,changed=false){
+    const bits=lines.map(v=>changed?(v===6||v===7?1:0):v%2);
+    const lower=TRIGRAMS[bits[0]+bits[1]*2+bits[2]*4],upper=TRIGRAMS[bits[3]+bits[4]*2+bits[5]*4];
+    const [number,name]=HEXAGRAMS[upper.index][lower.index].split(':');
+    return {number:Number(number),name,description:upper.name===lower.name?upper.name+'为'+upper.image:upper.image+lower.image+name};
+  }
+  function fresh(mode='step'){return {mode,lines:[],traces:[],remaining:49,question:'',createdAt:new Date().toISOString()};}
+  let state=fresh(),storageOK=true;
+  try{const saved=JSON.parse(localStorage.getItem(KEY));if(saved&&['line','step'].includes(saved.mode)&&Array.isArray(saved.lines)&&saved.lines.length<=6&&saved.lines.every(n=>[6,7,8,9].includes(n))&&Array.isArray(saved.traces)&&saved.traces.length<=18){
+    let count=49,values=[];let valid=true;
+    saved.traces.forEach((t,i)=>{if(!t||t.before!==count||!Number.isInteger(t.left)||t.left<1||t.left>count-2||t.right!==count-t.left||t.lr!==(t.left%4||4)||t.rr!==((t.right-1)%4||4)||t.removed!==1+t.lr+t.rr||t.after!==count-t.removed){valid=false;return;}count=t.after;if(i%3===2){values.push(count/4);count=49;}});
+    if(valid&&JSON.stringify(values)===JSON.stringify(saved.lines)&&saved.remaining===count&&(saved.lines.length<6||saved.traces.length===18))state={...saved,question:String(saved.question||'').slice(0,120)};
+  }}catch(e){storageOK=false;}
+  function save(){try{localStorage.setItem(KEY,JSON.stringify(state));}catch(e){storageOK=false;}}
+  let busy=false,holding=false,startTime=0,activePointer=null,holdSource=null,showChanged=false,toastTimer;
+  const canvas=$('pond'),ctx=canvas.getContext('2d'),holdButton=$('hold'),sceneCoordinate=$('sceneCoordinate');
+  const countMeter=$('splitMeter'),darkCount=$('leftCount'),paleCount=$('rightCount'),countNote=$('splitNote');
+  const canvasFont=getComputedStyle(document.body).fontFamily,coarsePointer=matchMedia('(pointer: coarse)').matches;
+  let w=0,h=0,dpr=1,lastFrame=0,elapsed=0,motion='idle',currentCount=49,displayTrace=null;
+  let wave=null,presented=null,frozen=null,countTargets=new Map(),pressPlan=null;
+  const reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let frameHandle=0,settleUntil=0,lastTextUpdate=-Infinity,mobileRendering=false;
+  function queuePaint(){if(!frameHandle&&!document.hidden)frameHandle=requestAnimationFrame(draw);}
+  function setMotion(next){motion=next;settleUntil=performance.now()+(['idle','complete','count'].includes(next)?550:0);queuePaint();}
+  const particles=Array.from({length:49},(_,i)=>({phase:Math.random()*Math.PI*2,seed:Math.random(),angle:Math.random()*Math.PI*2,radius:.3+Math.random()*.7,x:0,y:0,rotation:0,alpha:1}));
+  function resize(){
+    const box=canvas.getBoundingClientRect();mobileRendering=coarsePointer||box.width<600;
+    const ratio=Math.min(devicePixelRatio||1,mobileRendering?1.5:2);
+    if(w===box.width&&h===box.height&&dpr===ratio)return;
+    w=box.width;h=box.height;dpr=ratio;canvas.width=Math.round(w*dpr);canvas.height=Math.round(h*dpr);ctx.setTransform(dpr,0,0,dpr,0,0);settleUntil=performance.now()+550;queuePaint();
+  }
+  new ResizeObserver(resize).observe(canvas);
+  // A press supplies the only new entropy. Release only consumes an already drawn frame.
+  function makeRandom(seed){return ()=>{seed=(seed+0x6D2B79F5)>>>0;let t=seed;t=Math.imul(t^t>>>15,t|1);t^=t+Math.imul(t^t>>>7,t|61);return ((t^t>>>14)>>>0)/4294967296;};}
+  function pressSeed(){try{const a=new Uint32Array(1);crypto.getRandomValues(a);return a[0];}catch(e){return Math.floor(Math.random()*4294967296);}}
+  const GRID=7, DIRECTIONS=[[1,0],[1,1],[0,1],[-1,1],[-1,0],[-1,-1],[0,-1],[1,-1]];
+  function emitPulse(sim){
+    const random=sim.random,strength=.30+random()*.70,rays=16+Math.floor(random()*36);
+    sim.pulseStrength=strength;
+    for(let i=0;i<rays;i++){const dir=DIRECTIONS[Math.floor(random()*8)];sim.packets.push({x:3,y:3,dx:dir[0],dy:dir[1],returning:false,energy:.5+strength*(.4+random()*.8),wait:Math.floor(random()*3),ttl:18+Math.floor(random()*22)});}
+    // The drop itself excites a small, irregular patch, not a fixed count.
+    for(let y=2;y<=4;y++)for(let x=2;x<=4;x++){const id=y*GRID+x;if(id<sim.count&&random()<strength)sim.cells[id].dark=true;}
+    sim.nextPulse=sim.time+130+random()*620;
+  }
+  function makeWave(count,seed){
+    const random=makeRandom(seed),sim={count,random,time:0,nextStep:0,nextPulse:0,packets:[],trails:[],bounces:[],pulseStrength:.7,cells:Array.from({length:count},(_,id)=>({id,dark:false,spread:.38+random()*.60,clear:.3+random()*.60,rotation:(random()-.5)*.23}))};
+    emitPulse(sim);sim.nextStep=25+random()*25;return sim;
+  }
+  function advanceWave(sim){
+    const random=sim.random,next=[];sim.time=sim.nextStep;
+    sim.trails=sim.trails.filter(t=>sim.time-t.time<145);sim.bounces=sim.bounces.filter(t=>sim.time-t.time<220);
+    if(sim.time>=sim.nextPulse)emitPulse(sim);
+    for(const original of sim.packets){
+      const p={...original};if(p.wait>0){p.wait--;next.push(p);continue;}
+      const fromX=p.x,fromY=p.y;let nx=p.x+p.dx,ny=p.y+p.dy,bounced=false;
+      if(nx<0||nx>=GRID){p.dx=-p.dx;nx=p.x+p.dx;bounced=true;}
+      if(ny<0||ny>=GRID){p.dy=-p.dy;ny=p.y+p.dy;bounced=true;}
+      if(bounced){p.returning=true;p.ttl=Math.min(p.ttl,5+Math.floor(random()*7));p.energy*=.65+random()*.30;sim.bounces.push({x:fromX,y:fromY,time:sim.time});}
+      p.x=nx;p.y=ny;p.ttl--;p.energy*=.91+random()*.085;
+      const id=ny*GRID+nx,cell=sim.cells[id];
+      if(cell&&random()<(p.returning?cell.clear:cell.spread)*Math.min(p.energy,1.2))cell.dark=!p.returning;
+      sim.trails.push({x:fromX,y:fromY,nx,ny,returning:p.returning,time:sim.time});
+      // Each node may transmit, scatter into a new direction, branch, or absorb.
+      if(p.ttl>0&&p.energy>.12&&random()<.93){
+        if(random()<.18){const current=DIRECTIONS.findIndex(d=>d[0]===p.dx&&d[1]===p.dy),dir=DIRECTIONS[(current+(random()<.5?1:7))%8];p.dx=dir[0];p.dy=dir[1];}
+        p.wait=random()<.27?1:0;next.push(p);
+        if(next.length<105&&random()<(p.returning?.035:.28)){const dir=DIRECTIONS[Math.floor(random()*8)];next.push({...p,dx:dir[0],dy:dir[1],energy:p.energy*.73,wait:1});}
+      }
+    }
+    sim.packets=next.slice(0,120);sim.trails=sim.trails.slice(-160);sim.bounces=sim.bounces.slice(-28);sim.nextStep+=28+random()*29;
+  }
+  function sampleWave(sim,ms){
+    while(sim.nextStep<=ms)advanceWave(sim);
+    // Reuse immutable geometry and trail arrays until the simulation actually advances.
+    if(!sim.frame||sim.frame.time!==sim.time){
+      const points=sim.cells.map(c=>({id:c.id,x:(c.id%GRID-3)/6,y:(Math.floor(c.id/GRID)-3)/6,rotation:c.rotation,dark:c.dark}));
+      const leftIds=[],rightIds=[];for(const point of points)(point.dark?leftIds:rightIds).push(point.id);
+      sim.frame={points,leftIds,rightIds,left:leftIds.length,right:rightIds.length,trails:sim.trails,bounces:sim.bounces,time:sim.time};
+    }
+    return {...sim.frame,ms};
+  }
+  function divideVisible(snapshot){const left=snapshot.left,right=snapshot.right,lr=left%4||4,rr=(right-1)%4||4,removed=1+lr+rr;return {before:left+right,left,right,lr,rr,removed,after:left+right-removed,heldMs:Math.round(snapshot.ms),source:'visible-color'};}
+  function makeCountTargets(snapshot,t){
+    const targets=new Map(),leftKept=snapshot.leftIds.slice(0,t.left-t.lr),rightKept=snapshot.rightIds.slice(1,t.right-t.rr);
+    const removed=[snapshot.rightIds[0],...snapshot.leftIds.slice(t.left-t.lr),...snapshot.rightIds.slice(t.right-t.rr)];
+    [leftKept,rightKept,removed].forEach((ids,group)=>ids.forEach((id,rank)=>targets.set(id,{group,rank,total:ids.length,hanging:group===2&&rank===0})));
+    return targets;
+  }
+  function showSplit(snapshot,isFrozen=false){
+    if(countMeter.hidden)countMeter.hidden=false;
+    if(countMeter.classList.contains('frozen')!==isFrozen)countMeter.classList.toggle('frozen',isFrozen);
+    if(darkCount.textContent!==String(snapshot.left))darkCount.textContent=snapshot.left;
+    if(paleCount.textContent!==String(snapshot.right))paleCount.textContent=snapshot.right;
+    const note=isFrozen?'已定格 · 只清点深色':'扩散染深 · 触壁返浅';if(countNote.textContent!==note)countNote.textContent=note;
+  }
+  function bundleSize(){return Math.min(w*.54,h*.36,164);}
+  function targetFor(i){
+    const cx=w*.51,cy=h*.47;
+    if(['holding','auto-wave','frozen'].includes(motion)){
+      const point=(motion==='holding'||motion==='auto-wave'?presented:frozen)?.points[i];
+      const size=bundleSize();return point?{x:cx+point.x*size,y:cy+point.y*size,rotation:point.rotation,alpha:1}:{x:cx,y:cy,rotation:0,alpha:0};
+    }
+    if(motion==='count'&&displayTrace){
+      const target=countTargets.get(i);if(!target)return {x:cx,y:cy,rotation:0,alpha:0};
+      const {rank,group}=target,gap=w<430?6:8,cols=8,col=rank%cols,row=Math.floor(rank/cols);
+      const ox=group===0?w*.30:group===1?w*.72:w*.51;
+      return {x:ox+(col-3.5)*gap+(col>=4?4:-4),y:(group===2?h*.69:h*.30)+row*25,rotation:group===2?.18:0,alpha:group===2?.55:1};
+    }
+    if(motion==='complete')return {x:cx+Math.cos(particles[i].angle)*Math.min(w*.3,105)*particles[i].radius,y:cy+Math.sin(particles[i].angle)*70*particles[i].radius,rotation:particles[i].angle,alpha:.45};
+    const size=bundleSize();return {x:cx+(i%GRID-3)*size/6,y:cy+(Math.floor(i/GRID)-3)*size/6,rotation:Math.sin(particles[i].phase)*.10,alpha:i<currentCount?1:0};
+  }
+  function paint(now,force=false){
+    if(document.hidden)return;if(!force&&now-lastFrame<(reduced?65:mobileRendering?1000/30:1000/60)-.75)return;
+    const dt=Math.min((now-lastFrame)/1000,.1)||.03;lastFrame=now;elapsed+=dt;ctx.clearRect(0,0,w,h);
+    const activeWave=motion==='holding'||motion==='auto-wave',isWave=activeWave||motion==='frozen';
+    if(activeWave){presented=sampleWave(wave,now-startTime);showSplit(presented);}
+    const frame=activeWave?presented:frozen,cx=w*.51,cy=h*.47,size=bundleSize();
+    ctx.globalAlpha=1;ctx.strokeStyle='#9b9e7919';ctx.lineWidth=1;ctx.beginPath();
+    for(const factor of [.17,.29,.39]){const r=h*factor;ctx.moveTo(cx+r*(w<430?1:1.3),cy);ctx.ellipse(cx,cy,r*(w<430?1:1.3),r*.65,0,0,Math.PI*2);}ctx.stroke();
+    if(isWave&&frame){
+      const pad=size/10;ctx.strokeStyle='#85927650';ctx.strokeRect(cx-size/2-pad,cy-size/2-pad,size+pad*2,size+pad*2);
+      if(!reduced){
+        // One stroke per colour instead of one stroke per ray.
+        const first=Math.max(0,frame.trails.length-(mobileRendering?64:96));ctx.globalAlpha=.14;
+        for(let returning=0;returning<2;returning++){
+          ctx.strokeStyle=returning?'#a79068':'#667e62';ctx.beginPath();
+          for(let i=first;i<frame.trails.length;i++){const t=frame.trails[i];if(Number(t.returning)!==returning)continue;ctx.moveTo(cx+(t.x-3)*size/6,cy+(t.y-3)*size/6);ctx.lineTo(cx+(t.nx-3)*size/6,cy+(t.ny-3)*size/6);}ctx.stroke();
+        }
+        ctx.globalAlpha=.3;ctx.strokeStyle='#a79068';ctx.beginPath();
+        for(let i=Math.max(0,frame.bounces.length-(mobileRendering?8:12));i<frame.bounces.length;i++){const t=frame.bounces[i],r=4+(frame.time-t.time)/220*12,x=cx+(t.x-3)*size/6,y=cy+(t.y-3)*size/6;ctx.moveTo(x+r,y);ctx.arc(x,y,r,0,Math.PI*2);}ctx.stroke();ctx.globalAlpha=1;
+      }
+    }
+    if(motion==='count'){ctx.fillStyle='#8a907d';ctx.font='10px '+canvasFont;ctx.textAlign='center';ctx.fillText('挂一与余数 · '+displayTrace.removed+' 根',w*.51,h*.81);}
+    const speed=reduced||isWave?1:1-Math.exp(-dt*10);
+    for(let i=0;i<particles.length;i++){
+      const p=particles[i],target=targetFor(i);p.x+=(target.x-p.x)*speed;p.y+=(target.y-p.y)*speed;p.rotation+=(target.rotation-p.rotation)*speed;p.alpha+=(target.alpha-p.alpha)*speed;p.visible=target.alpha>0&&p.alpha>.01;
+      p.tint=motion==='count'&&countTargets.get(i)?.group===2?2:(isWave?!!frame?.points[i]?.dark:motion==='count')?1:0;
+      p.dx=Math.sin(p.rotation)*8;p.dy=Math.cos(p.rotation)*8;
+    }
+    if(isWave){ctx.fillStyle='#48604412';ctx.beginPath();for(const p of particles){if(!p.visible||p.tint!==1)continue;ctx.moveTo(p.x+11,p.y);ctx.arc(p.x,p.y,11,0,Math.PI*2);}ctx.fill();}
+    const colours=['#c1c6af','#344d3d','#a34d3b'];ctx.lineCap='round';
+    for(let tint=0;tint<3;tint++){
+      ctx.strokeStyle=colours[tint];ctx.lineWidth=tint===0?1.7:2.8;ctx.globalAlpha=motion==='complete'?.45:tint===2?.55:1;ctx.beginPath();
+      for(const p of particles){if(!p.visible||p.tint!==tint)continue;ctx.moveTo(p.x+p.dx,p.y-p.dy);ctx.lineTo(p.x-p.dx,p.y+p.dy);}ctx.stroke();
+    }
+    ctx.globalAlpha=1;
+    if(holding&&now-lastTextUpdate>=100){lastTextUpdate=now;const time=(now-startTime)/1000;sceneCoordinate.textContent=time.toFixed(2)+' S · 念 随 波 生';holdButton.style.setProperty('--charge',String(Math.min(time/4,1)));}
+  }
+  function draw(now){
+    frameHandle=0;if(document.hidden)return;paint(now);
+    if(motion==='holding'||motion==='auto-wave'||now<settleUntil)queuePaint();
+  }
+  resize();particles.forEach((p,i)=>Object.assign(p,targetFor(i)));queuePaint();
+  function toast(message){$('toast').textContent=message;$('toast').classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(()=>$('toast').classList.remove('show'),2600);}
+  function announce(message){$('live').textContent=message;}
+  function render(){
+    const n=state.lines.length,part=state.traces.length%3,complete=n===6;
+    $('copyResult').hidden=!complete;if(complete)$('copyText').value=resultText(state);
+    $('question').value=state.question;$('reset').disabled=busy||holding;$('question').disabled=busy||holding;
+    $('modeStep').setAttribute('aria-pressed',String(state.mode==='step'));$('modeLine').setAttribute('aria-pressed',String(state.mode==='line'));$('modeStep').disabled=busy||holding;$('modeLine').disabled=busy||holding;
+    $('stageLabel').textContent=complete?'六爻已成 · 观象静思':NAMES[n]+'爻 · 蓍草'+state.remaining;
+    $('controlNote').textContent=complete?'六爻已成，可切换查看之卦或保存卦象':state.mode==='line'?'松手定第一变，其余自动演完 · 一次按压得一爻':'按住起波，松手清点深色蓍草 · 三变一爻，十八变成卦';
+    $('hold').disabled=busy||complete;$('hold').querySelector('.label').textContent=complete?'六 爻 已 成':busy?'清点 · 成象':'按住 · 分蓍';$('hold').querySelector('.sub').textContent=complete?'观象以省身':busy?'请稍候':'松手落定';
+    document.querySelectorAll('.round').forEach((el,i)=>el.className='round'+(complete||i<part?' done':i===part?' current':''));
+    $('progressBar').style.width=n/6*100+'%';$('progressText').textContent=NUM[n]+'爻 / 六爻';$('progressPercent').textContent=Math.round(n/6*100)+'%';$('hexModeLabel').textContent=showChanged?'之卦':'本卦';
+    $('hexList').innerHTML=Array.from({length:6},(_,i)=>{const v=state.lines[i],moving=v===6||v===9,yang=showChanged?(v===6||v===7):v%2===1;return '<div class="yao-row" aria-label="'+NAMES[i]+'爻：'+(v?(v+' '+({6:'老阴',7:'少阳',8:'少阴',9:'老阳'})[v]):'待起')+'"><span class="yao-index">'+NAMES[i]+'</span><span class="yao-body '+(!v?'empty':moving&&!showChanged?'moving':'')+'">'+(v?(yang?'<i></i>':'<i></i><i></i>'):'')+'</span><span class="yao-number '+(moving?'moving':'')+'">'+(v?v+(moving?' ·':''):'—')+'</span></div>';}).join('');
+    const start=Math.floor((state.traces.length-1)/3)*3,current=state.traces.slice(Math.max(0,start));
+    $('logBody').innerHTML=current.map((t,i)=>'<tr class="new-row"><td>第'+NUM[i+1]+'变</td><td>'+t.left+' / '+t.right+'</td><td>1</td><td>'+t.lr+' / '+t.rr+'</td><td>'+t.removed+'</td><td>'+t.after+'</td></tr>').join('');
+    $('logEmpty').hidden=!!current.length;$('logCaption').textContent=current.length?NAMES[Math.floor((state.traces.length-1)/3)]+'爻 · '+(current.length===3?'余蓍 '+current[2].after+' ÷ 4 = '+current[2].after/4:'第 '+current.length+' / 3 变'):'三变成一爻';
+    if(complete){
+      const original=hexInfo(state.lines),changed=hexInfo(state.lines,true),moving=state.lines.map((v,i)=>v===6||v===9?NAMES[i]+'爻':null).filter(Boolean);
+      $('reading').innerHTML='<div class="result-names"><div><span class="reading-label">本 卦 · '+original.number+'</span><div class="reading-title">'+original.name+'</div></div><span class="result-arrow">→</span><div><span class="reading-label">之 卦 · '+changed.number+'</span><div class="reading-title">'+changed.name+'</div></div></div><p class="reading-sub">'+original.description+' → '+changed.description+'</p><p class="moving-detail">'+(moving.length?'动爻：'+moving.join('、')+'。<br>朱砂爻变，阴阳互易。':'六爻皆静，本卦与之卦相同。')+'</p><div class="result-actions"><button class="small-btn" id="toggleHex">'+(showChanged?'查看本卦':'查看之卦')+'</button><button class="small-btn" id="saveResult">保存卦象 ↓</button></div>';
+      $('toggleHex').onclick=()=>{showChanged=!showChanged;render();};$('saveResult').onclick=downloadResult;
+    }else if(n){$('reading').innerHTML='<span class="reading-label">三 变 成 爻</span><div class="reading-title">'+NAMES[n-1]+'爻 · '+({6:'老阴',7:'少阳',8:'少阴',9:'老阳'})[state.lines[n-1]]+'</div><p class="reading-sub">已得'+NUM[n]+'爻，尚待'+NUM[6-n]+'爻。<br>下一爻，从四十九根重新开始。</p>';}
+    else{$('reading').innerHTML='<span class="reading-label">静 心 以 待</span><div class="reading-title">一卦，尚在途中</div><p class="reading-sub">不必求快。<br>让每一次松手，都成为一处停顿。</p>';}
+  }
+  const delay=ms=>new Promise(resolve=>setTimeout(resolve,reduced?Math.min(ms,180):ms));
+  function begin(source,pointer){if(busy||holding||state.lines.length===6)return;holding=true;holdSource=source;activePointer=pointer;startTime=performance.now();currentCount=state.remaining;const seed=pressSeed(),random=makeRandom(seed);pressPlan={seeds:[seed,Math.floor(random()*4294967296),Math.floor(random()*4294967296)],factors:[1,.86+random()*.28,.86+random()*.28]};wave=makeWave(currentCount,seed);presented=null;frozen=null;setMotion('holding');displayTrace=null;render();$('hold').classList.add('active');$('hold').querySelector('.label').textContent='按 住 · 起 波';$('hold').querySelector('.sub').textContent='松手即冻结';$('sceneTitle').textContent='一滴起波，深浅相生';$('sceneSubtitle').textContent='向外随机染深，触壁返波褪浅，松手数深色';paint(startTime,true);if(navigator.vibrate)navigator.vibrate(12);}
+  function cancelHold(){if(!holding)return;holding=false;activePointer=null;holdSource=null;setMotion('idle');wave=null;presented=null;frozen=null;$('splitMeter').hidden=true;currentCount=state.remaining;$('hold').classList.remove('active');$('hold').style.setProperty('--charge','0');setIdleText();render();}
+  function setIdleText(){if(state.lines.length===6){$('sceneTitle').textContent='六爻成象';$('sceneSubtitle').textContent='此刻已落定，留一份静思';setMotion('complete');}else if(state.traces.length%3){$('sceneTitle').textContent='第'+NUM[state.traces.length%3]+'变，余'+state.remaining+'蓍';$('sceneSubtitle').textContent='继续分蓍，三变成一爻';}else if(state.lines.length){$('sceneTitle').textContent=NAMES[state.lines.length-1]+'爻已定';$('sceneSubtitle').textContent='蓍草复归四十九，静候下一爻';}else{$('sceneTitle').textContent='蓍草未分';$('sceneSubtitle').textContent='五十取一，以四十九入筮';}$('sceneCoordinate').textContent='静 待 一 念';}
+  async function countFrozen(snapshot){
+    // Every count consumes the last frame actually displayed; no replacement draw.
+    frozen=snapshot;setMotion('frozen');showSplit(frozen,true);render();
+    if(frozen.left===0||frozen.right<2){
+      $('sceneTitle').textContent='定格 · 深色 '+frozen.left+' 根';$('sceneSubtitle').textContent=frozen.left===0?'没有深色蓍草，此次不计变，请重新按住起波':'浅色不足两根，无法挂一，此次不计变';$('sceneCoordinate').textContent=(frozen.ms/1000).toFixed(2)+' S · 此 次 未 入 筮';paint(performance.now(),true);announce($('sceneSubtitle').textContent);return false;
+    }
+    const t=divideVisible(frozen),part=state.traces.length%3,idx=state.lines.length;
+    countTargets=makeCountTargets(frozen,t);displayTrace=t;
+    $('sceneTitle').textContent='定格 · 深色 '+t.left+' 根';$('sceneSubtitle').textContent='只计眼前深色蓍草，浅色 '+t.right+' 根作为另一组';$('sceneCoordinate').textContent=(frozen.ms/1000).toFixed(2)+' S · 已 定 格';paint(performance.now(),true);
+    await delay(800);setMotion('count');$('splitNote').textContent='浅色挂一 · 余数移出';$('sceneTitle').textContent='第'+NUM[part+1]+'变 · 四根一数';$('sceneSubtitle').textContent='挂一 1 ＋ 深余 '+t.lr+' ＋ 浅余 '+t.rr+'，移出 '+t.removed+' 根';
+    await delay(700);
+    state.traces.push(t);state.remaining=t.after;
+    if(part===2){const value=t.after/4;state.lines.push(value);state.remaining=49;$('sceneTitle').textContent=NAMES[idx]+'爻 · '+({6:'老阴',7:'少阳',8:'少阴',9:'老阳'})[value];$('sceneSubtitle').textContent='余蓍 '+t.after+' ÷ 4 = '+value+(value===6||value===9?' · 动爻':' · 静爻');announce(NAMES[idx]+'爻得'+value+'，'+({6:'老阴，变阳',7:'少阳',8:'少阴',9:'老阳，变阴'})[value]);if(navigator.vibrate)navigator.vibrate([15,60,20]);}
+    else{$('sceneTitle').textContent='移出 '+t.removed+' · 余 '+t.after;$('sceneSubtitle').textContent='挂一 1 ＋ 深余 '+t.lr+' ＋ 浅余 '+t.rr+' = '+t.removed;announce('第'+NUM[part+1]+'变，移出'+t.removed+'根，剩余'+t.after+'根');}
+    save();render();await delay(part===2?700:500);return true;
+  }
+  async function finish(){
+    if(!holding||!presented)return;
+    const duration=presented.ms,turns=state.mode==='line'?3-state.traces.length%3:1;
+    holding=false;activePointer=null;holdSource=null;busy=true;let invalid=false,paused=false;
+    $('hold').classList.remove('active');$('hold').style.setProperty('--charge','0');
+    try{
+      for(let turn=0;turn<turns;turn++){
+        if(turn>0){
+          if(document.hidden){paused=true;break;}
+          currentCount=state.remaining;wave=makeWave(currentCount,pressPlan.seeds[turn]);startTime=performance.now();setMotion('auto-wave');presented=null;frozen=null;displayTrace=null;render();
+          $('sceneTitle').textContent='第'+NUM[state.traces.length%3+1]+'变 · 自动起波';$('sceneSubtitle').textContent='波纹继续演化，仍以眼前深色蓍草清点';paint(startTime,true);
+          await delay(Math.max(550,Math.min(duration,1400))*pressPlan.factors[turn]);
+          if(document.hidden){paused=true;break;}
+        }
+        if(!await countFrozen(presented)){invalid=true;break;}
+      }
+    }finally{
+      busy=false;currentCount=state.remaining;displayTrace=null;
+      if(!invalid){setMotion(state.lines.length===6?'complete':'idle');$('splitMeter').hidden=true;}
+      render();
+      if(paused){setMotion('idle');setIdleText();toast('自动演算已暂停，返回后按住即可继续当前爻');}
+      if(state.lines.length===6){$('sceneTitle').textContent='六爻成象';$('sceneSubtitle').textContent='本卦 · '+hexInfo(state.lines).name+'，之卦 · '+hexInfo(state.lines,true).name;announce('六爻完成。本卦'+hexInfo(state.lines).name+'，之卦'+hexInfo(state.lines,true).name);}
+      if(!storageOK)toast('浏览器未开放本地存储，本次进度暂不能自动保存');
+    }
+  }
+  function setMode(mode){
+    if(busy||holding||state.mode===mode)return;
+    state.mode=mode;save();render();
+    if(mode==='line'&&state.traces.length%3)toast('已保留进度，下次按压自动补齐当前爻');
+  }
+  $('modeStep').onclick=()=>setMode('step');$('modeLine').onclick=()=>setMode('line');
+  {
+    const surface=$('hold');
+    surface.addEventListener('pointerdown',e=>{if(e.button!==0||busy||holding||state.lines.length===6)return;e.preventDefault();surface.focus({preventScroll:true});surface.setPointerCapture(e.pointerId);begin('pointer',e.pointerId);});
+    surface.addEventListener('pointerup',e=>{if(holdSource==='pointer'&&e.pointerId===activePointer){e.preventDefault();finish();}});
+    surface.addEventListener('pointercancel',cancelHold);surface.addEventListener('lostpointercapture',()=>{if(holding)cancelHold();});
+    surface.addEventListener('contextmenu',e=>e.preventDefault());
+    surface.addEventListener('keydown',e=>{if(e.code==='Space'||e.code==='Enter'){e.preventDefault();if(!e.repeat)begin('key',null);}});
+    surface.addEventListener('keyup',e=>{if((e.code==='Space'||e.code==='Enter')&&holdSource==='key'){e.preventDefault();finish();}});
+    surface.addEventListener('click',e=>{if(e.detail===0&&!holding&&!busy&&state.lines.length<6){begin('assistive',null);finish();}});
+  }
+  window.addEventListener('blur',cancelHold);document.addEventListener('visibilitychange',()=>{if(document.hidden){cancelHold();if(frameHandle)cancelAnimationFrame(frameHandle);frameHandle=0;}else{settleUntil=performance.now()+550;queuePaint();}});
+  $('question').addEventListener('input',()=>{state.question=$('question').value;save();if(state.lines.length===6)$('copyText').value=resultText(state);});
+  function requestReset(){if(busy)return;cancelHold();if(state.traces.length)$('resetDialog').showModal();else doReset();}
+  function doReset(){$('copyHint').textContent='也可直接选中文字，复制保存。';const question=state.question;state=fresh(state.mode);state.question=question;showChanged=false;currentCount=49;setMotion('idle');displayTrace=null;presented=null;frozen=null;wave=null;$('splitMeter').hidden=true;save();render();setIdleText();if($('resetDialog').open)$('resetDialog').close();}
+  $('reset').onclick=requestReset;$('confirmReset').onclick=doReset;$('cancelReset').onclick=()=>{$('resetDialog').close();};
+  $('helpButton').onclick=()=>{$('guide').open=true;$('guide').scrollIntoView({behavior:reduced?'instant':'smooth',block:'start'});};
+  function resultText(record){
+    const original=hexInfo(record.lines),changed=hexInfo(record.lines,true),positions=['初','二','三','四','五','上'];
+    const lineLabel=(v,i)=>i===0?'初'+(v%2?'九':'六'):i===5?'上'+(v%2?'九':'六'):(v%2?'九':'六')+positions[i];
+    const moving=record.lines.flatMap((v,i)=>v===6||v===9?[lineLabel(v,i)+'（'+(i===0?'初爻':i===5?'上爻':'第'+positions[i]+'爻')+'，'+(v===6?'老阴，阴变阳':'老阳，阳变阴')+'）']:[]);
+    return ['询问事项：'+(record.question.trim()||'未填写'),'', '本卦：第'+original.number+'卦 · '+original.name+'（'+original.description+'）','之卦：第'+changed.number+'卦 · '+changed.name+'（'+changed.description+'）','', '动爻：'+(moving.length?moving.join('；'):'无。六爻皆静，本卦与之卦相同。'),'', '六爻数值（自下而上）：'+record.lines.join('、'),'六爻阴阳（自下而上）：'+record.lines.map(v=>v%2?'阳':'阴').join('、')].join('\n');
+  }
+  $('copyResultButton').onclick=async()=>{
+    const field=$('copyText'),text=resultText(state);field.value=text;
+    try{if(!navigator.clipboard?.writeText)throw new Error('clipboard unavailable');await navigator.clipboard.writeText(text);$('copyHint').textContent='已复制，可粘贴到聊天、备忘录或文档。';toast('起卦记录已复制');}
+    catch(e){field.focus({preventScroll:true});field.select();field.setSelectionRange(0,text.length);let copied=false;try{copied=document.execCommand('copy');}catch(error){}$('copyHint').textContent=copied?'已复制，可粘贴保存。':'文字已选中，请长按复制，或按 Ctrl / ⌘ + C。';toast(copied?'起卦记录已复制':'文字已选中，可手动复制');}
+  };
+  function escapeXML(s){return String(s).replace(/[<>&"']/g,c=>({'<':'&lt;','>':'&gt;','&':'&amp;','"':'&quot;',"'":'&apos;'})[c]);}
+  function downloadResult(){
+    const a=hexInfo(state.lines),b=hexInfo(state.lines,true);let shapes='';
+    [false,true].forEach((changed,k)=>{const x=83+k*273;state.lines.forEach((v,i)=>{const y=230+(5-i)*29,yang=changed?(v===6||v===7):v%2===1,color=!changed&&(v===6||v===9)?'#a34d3b':'#303c36';shapes+=yang?`<rect x="${x}" y="${y}" width="150" height="8" rx="1" fill="${color}"/>`:`<path d="M${x} ${y+4}h62m26 0h62" stroke="${color}" stroke-width="8"/>`;});});
+    const moving=state.lines.map((v,i)=>v===6||v===9?NAMES[i]+'爻':null).filter(Boolean).join('、')||'无动爻';
+    const question=state.question;const questionLines=question.match(/.{1,25}/gu)||['此刻无问，静观其象。'];
+    const svg=`<svg xmlns="http://www.w3.org/2000/svg" width="590" height="760" viewBox="0 0 590 760"><rect width="590" height="760" fill="#f5f2e9"/><g font-family="Songti SC,SimSun,serif" fill="#303c36"><text x="42" y="65" font-size="30">筮</text><text x="42" y="105" font-size="12" fill="#83887a" letter-spacing="3">于涟漪之间，得一卦。</text><path d="M42 131H548" stroke="#dcdccd"/><text x="83" y="183" font-size="13" fill="#aa9060">本卦 · 第${a.number}卦</text><text x="356" y="183" font-size="13" fill="#aa9060">之卦 · 第${b.number}卦</text>${shapes}<text x="83" y="442" font-size="29">${a.name}</text><text x="356" y="442" font-size="29">${b.name}</text><text x="83" y="469" font-size="13" fill="#83887a">${a.description}</text><text x="356" y="469" font-size="13" fill="#83887a">${b.description}</text><path d="M42 497H548" stroke="#dcdccd"/><text x="42" y="527" font-size="12" fill="#83887a">所问</text>${questionLines.map((line,i)=>`<text x="42" y="${554+i*22}" font-size="16">${escapeXML(line)}</text>`).join('')}<text x="42" y="682" font-size="12" fill="#a34d3b">${escapeXML('动爻：'+moving)}</text><text x="42" y="716" font-size="11" fill="#83887a">${escapeXML(new Date(state.createdAt).toLocaleString('zh-CN'))} · 蓍草筮法的数字演绎</text></g></svg>`;
+    const url=URL.createObjectURL(new Blob([svg],{type:'image/svg+xml;charset=utf-8'}));const link=document.createElement('a');link.href=url;link.download='筮-'+a.name+'之'+b.name+'.svg';document.body.append(link);link.click();link.remove();setTimeout(()=>URL.revokeObjectURL(url),10000);toast('卦象已导出为 SVG 图片，可保存与分享');
+  }
+  currentCount=state.remaining;render();setIdleText();
+  </script>
+</body>
+</html>
